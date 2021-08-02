@@ -6,6 +6,7 @@
 package com.ddemess.dvd_library.controller;
 
 import com.ddemess.dvd_library.dao.DvdDao;
+import com.ddemess.dvd_library.dao.DvdDaoException;
 import com.ddemess.dvd_library.dao.DvdDaoFileImpl;
 import com.ddemess.dvd_library.dto.DVD;
 import com.ddemess.dvd_library.ui.DVD_libraryView;
@@ -28,28 +29,33 @@ public class DVD_Controll {
         this.dao = dao;
         this.view = view;
 }
-    private void addDVD() {
+    private void addDVD() throws DvdDaoException {
         view.displayAddDVDBanner();
         DVD newDvd = view.getDvdInfo();
         dao.addDvd(newDvd.getDvdTitle(), newDvd);
         view.displayAddSuccessBanner();
     }
 
-    private void removeDVD() {
+    private void removeDVD() throws DvdDaoException {
         view.displayRemoveDVDBanner();
         String dvdTitle = view.getDVDtitle();
-        dao.removeDvd(dvdTitle);
+        if (dao.getDvd(dvdTitle)!=null){
+            dao.removeDvd(dvdTitle);
         view.displayDvdTitle("Removed DVD : " + dvdTitle);
+        }
+        else{
+            view.displayRemoveEmpty();
+        }
     }
 
-    private void listAllDVD() {
+    private void listAllDVD() throws DvdDaoException {
 
         view.displayDisplayAllBanner();
         List<String> studentList = dao.getAllDvd();
         view.displayDvdList(studentList);
     }
 
-    private void editDVD(DVD newD, int editChoice, String editTo) {
+    private void editDVD(DVD newD, int editChoice, String editTo) throws DvdDaoException {
         //if editing the key DVD TITLE
         if (editChoice == 1) {
             dao.removeDvd(newD.getDvdTitle());
@@ -81,7 +87,7 @@ private void search_DVD_byTitle() {
     Student removedStudent = dao.removeStudent(studentId);
     view.displayRemoveResult(removedStudent);
 }*/
-    public void run() {
+    public void run() throws DvdDaoException {
         boolean keepGoing = true;
         int menuSelection = 0;
         int editSelection = 0;
@@ -134,7 +140,6 @@ private void search_DVD_byTitle() {
                             break;
                         case 3:
                             choice = io.readString("Please enter new MPAA rating");
-                            choice = (String) choice;
                             editDVD(newD, editSelection, choice);
 
                             break;
@@ -148,7 +153,6 @@ private void search_DVD_byTitle() {
                             break;
                         case 6:
                             choice = io.readString("Please enter new user rating");
-                            choice = (String) choice;
                             editDVD(newD, editSelection, choice);
                             break;
                         case 7:

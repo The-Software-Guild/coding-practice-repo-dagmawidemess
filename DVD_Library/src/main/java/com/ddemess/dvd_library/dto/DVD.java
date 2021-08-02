@@ -13,11 +13,11 @@ public class DVD {
 
     public String dvdTitle;
     private String releaseDate;
-    private int MPAArating;
+    private String MPAArating;
     // Programming Language + cohort month/year
     private String directorName;
     private String studio;
-    private int userRating;
+    private String userRating;
 
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
@@ -35,11 +35,11 @@ public class DVD {
         this.dvdTitle = dvdTitle;
     }
 
-    public void setMPAArating(int MPAArating) {
+    public void setMPAArating(String MPAArating) {
         this.MPAArating = MPAArating;
     }
 
-    public int MPAArating() {
+    public String MPAArating() {
         return MPAArating;
     }
 
@@ -51,11 +51,11 @@ public class DVD {
         return studio;
     }
 
-    public void add_userRating(int userRating) {
+    public void add_userRating(String userRating) {
         this.userRating = userRating;
     }
 
-    public int userRating() {
+    public String userRating() {
         return userRating;
     }
 

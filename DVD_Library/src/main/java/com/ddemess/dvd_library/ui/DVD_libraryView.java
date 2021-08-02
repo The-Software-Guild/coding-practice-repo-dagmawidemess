@@ -23,8 +23,8 @@ public class DVD_libraryView {
         String dvdTitle = io.readString("Please enter DVD Title");
         String releaseDate = io.readString("Please enter Release date in mm/dd/year");
         String studioName = io.readString("Please enter studio name");
-        int MPAArating = io.readInt("Please enter MPAA rating");
-        int userRating = io.readInt("Please enter user rating");
+        String MPAArating = io.readString("Please enter MPAA rating");
+        String userRating = io.readString("Please enter user rating");
         String directorName = io.readString("Please enter Director's name");
         DVD newDVD = new DVD();
         newDVD.addDvdTitle(dvdTitle);
@@ -41,8 +41,8 @@ public class DVD_libraryView {
         String dvdTitle = io.readString("Please enter DVD Title");
         String releaseDate = io.readString("Please enter Release date in mm/dd/year");
         String studioName = io.readString("Please enter studio name");
-        int MPAArating = io.readInt("Please enter MPAA rating");
-        int userRating = io.readInt("Please enter user rating");
+        String MPAArating = io.readString("Please enter MPAA rating");
+        String userRating = io.readString("Please enter user rating");
         String directorName = io.readString("Please enter Director's name");
         DVD newDVD = new DVD();
         newDVD.addDvdTitle(dvdTitle);
@@ -56,10 +56,13 @@ public class DVD_libraryView {
     }
 
     public String getDVDtitle() {
-        return io.readString("Please enter DVD title for details on it or editing.");
+        return io.readString("Please enter DVD title for details, editing and deletion.");
     }
     public void displayExitBanner() {
     io.print("Good Bye!!!");
+}
+    public void displayRemoveEmpty() {
+    io.print("Such DVD for removing doesn't exist in library");
 }
 
 public void displayUnknownCommandBanner() {
@@ -87,6 +90,7 @@ public void displayUnknownCommandBanner() {
     }
 
     public void displayDetailDvdBanner(DVD dvdT) {
+        if (dvdT!=null){
         String studentInfo = String.format("Title: %s :: Release Date: %s :: MPAA Rating: %s :: Director's Name: %s\nStudio's name: %s :: User rating: %s",
                 dvdT.getDvdTitle(),
                 dvdT.releaseDate(),
@@ -95,7 +99,10 @@ public void displayUnknownCommandBanner() {
                 dvdT.studio(),
                 dvdT.userRating());
         io.print(studentInfo);
-
+        }
+        else{
+            io.print("Error: Such DVD doesn't exist in the library");
+        }
         io.readString("Please hit enter to continue.");
 
     }
@@ -121,7 +128,7 @@ public void displayRemoveResult(Student studentRecord) {
     }
 
     public void displayRemoveDVDBanner() {
-        io.print("=== Remove DVD ===");
+        io.print("=== Removing DVD... ===");
     }
 
     public String getStudentIdChoice() {

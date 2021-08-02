@@ -35,14 +35,15 @@ public interface DvdDao {
      * @return the Student object previously associated with the given student
      * id if it exists, null otherwise
      */
-    DVD addDvd(String dvdTitle, DVD dvd);
+    DVD addDvd(String dvdTitle, DVD dvd)
+            throws DvdDaoException;
 
-    DVD getDvd(String dvdTitle);
+    DVD getDvd(String dvdTitle)throws DvdDaoException;
 
-    List<String> getAllDvd(); // get all dvd title in key
+    List<String> getAllDvd()throws DvdDaoException;; // get all dvd title in key
 
-    void removeDvd(String dvdTitle);
+    void removeDvd(String dvdTitle)throws DvdDaoException;
 
-    void editDvd(DVD newD, int val, String editTo);
+    void editDvd(DVD newD, int val, String editTo)throws DvdDaoException;
 
 }
