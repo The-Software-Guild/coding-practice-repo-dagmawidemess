@@ -22,7 +22,6 @@ public class DVD_Controll {
 
     private DVD_libraryView view;
     private DvdDao dao;
-    private final UserIO io = new UserIOConsoleImpl();
 
     public DVD_Controll(DvdDao dao, DVD_libraryView view) {
         this.dao = dao;
@@ -51,11 +50,10 @@ public class DVD_Controll {
 
         view.displayDisplayAllBanner();
         List<String> dvdList = dao.getAllDvd();
-        if(dvdList.size()==0){
+        if (dvdList.isEmpty()) {
             view.emptyLib();
-        }
-        else{
-        view.displayDvdList(dvdList);
+        } else {
+            view.displayDvdList(dvdList);
         }
     }
 
@@ -76,32 +74,20 @@ public class DVD_Controll {
     private void exitMessage() {
         view.displayExitBanner();
     }
-private int getMenuSelection() {
-    return view.printMenuAndGetSelection();
-}
-private int getSelection() {
-    return view.printSelection();
-}
-    /*
-private void listAllDVD() {
-    view.displayRemoveStudentBanner();
-    String studentId = view.getStudentIdChoice();
-    Student removedStudent = dao.removeStudent(studentId);
-    view.displayRemoveResult(removedStudent);
-}
 
-private void search_DVD_byTitle() {
-    view.displayRemoveStudentBanner();
-    String studentId = view.getStudentIdChoice();
-    Student removedStudent = dao.removeStudent(studentId);
-    view.displayRemoveResult(removedStudent);
-}*/
+    private int getMenuSelection() {
+        return view.printMenuAndGetSelection();
+    }
+
+    private int getSelection() {
+        return view.printSelection();
+    }
+
     public void run() throws DvdDaoException {
         boolean keepGoing = true;
         int menuSelection = 0;
         int editSelection = 0;
         boolean selectGoing = true;
-        int actVal = 0;
         String choice = "";
         while (keepGoing) {
 
@@ -117,7 +103,7 @@ private void search_DVD_byTitle() {
                 case 3:
                     String dvdTitle = view.getDVDtitle();
                     DVD newD = dao.getDvd(dvdTitle);
-                    if (newD==null){
+                    if (newD == null) {
                         view.displayRemoveEmpty();
                         break;
                     }
@@ -126,7 +112,6 @@ private void search_DVD_byTitle() {
 
                     switch (editSelection) {
 
-    
                         case 1:
                             choice = view.newDtitle();
                             editDVD(newD, editSelection, choice);
@@ -136,12 +121,12 @@ private void search_DVD_byTitle() {
                             editDVD(newD, editSelection, choice);
                             break;
                         case 3:
-                            choice =view.newMPAA();
+                            choice = view.newMPAA();
                             editDVD(newD, editSelection, choice);
 
                             break;
                         case 4:
-                            choice =view.newDirector();
+                            choice = view.newDirector();
                             editDVD(newD, editSelection, choice);
                             break;
                         case 5:

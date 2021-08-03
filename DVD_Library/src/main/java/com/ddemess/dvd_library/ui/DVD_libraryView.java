@@ -15,31 +15,33 @@ import java.util.List;
 public class DVD_libraryView {
 
     private UserIO io;
-    
+
     public DVD_libraryView(UserIO io) {
         this.io = io;
     }
+
     public int printMenuAndGetSelection() {
-       io.print("Main Menu");
-            io.print("1. Add DVD");
-            io.print("2. Remove DVD");
-            io.print("3. Edit DVD");
-            io.print("4. List of all DVDs");
-            io.print("5. Detail about a DVD");
-            io.print("6. Search DVD by title");
-            io.print("7. EXIT");
+        io.print("Main Menu");
+        io.print("1. Add DVD");
+        io.print("2. Remove DVD");
+        io.print("3. Edit DVD");
+        io.print("4. List of all DVDs");
+        io.print("5. Detail about a DVD");
+        io.print("6. Search DVD by title");
+        io.print("7. EXIT");
 
         return io.readInt("Please select from the above choices.", 1, 7);
     }
+
     public int printSelection() {
-            io.print("Select Edit Choice number");
-                    io.print("1. DVD title");
-                    io.print("2. Release Date");
-                    io.print("3. MPAA rating");
-                    io.print("4. Directors name");
-                    io.print("5. Studio name");
-                    io.print("6. User rating");
-                    io.print("7. EXIT");
+        io.print("Select Edit Choice number");
+        io.print("1. DVD title");
+        io.print("2. Release Date");
+        io.print("3. MPAA rating");
+        io.print("4. Directors name");
+        io.print("5. Studio name");
+        io.print("6. User rating");
+        io.print("7. EXIT");
 
         return io.readInt("Please select from the above choices.", 1, 7);
     }
@@ -141,6 +143,7 @@ public class DVD_libraryView {
         io.print("DVD Title: " + dvdTitle);
         io.readString("Please hit enter to continue.");
     }
+
     public void emptyLib() {
 
         io.print("Library is empty :(");
@@ -151,26 +154,31 @@ public class DVD_libraryView {
         io.print("=== Removing DVD... ===");
     }
 
-
     public void displayEditingDVDTitle(String title) {
         io.print("=== Editing  DVD " + title + " ===");
         io.readString("Please hit enter to continue.");
     }
-   public String newDtitle() {
+
+    public String newDtitle() {
         return io.readString("Please enter new Title");
     }
+
     public String newRdate() {
         return io.readString("Please enter new release date");
     }
+
     public String newMPAA() {
         return io.readString("Please enter new MPAA rating");
     }
+
     public String newDirector() {
         return io.readString("Please enter new directors name");
     }
+
     public String newStudio() {
         return io.readString("Please enter new studio name");
     }
+
     public String newUser() {
         return io.readString("Please enter new user rating");
     }
