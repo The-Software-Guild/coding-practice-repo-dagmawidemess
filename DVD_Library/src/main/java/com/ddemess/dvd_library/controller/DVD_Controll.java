@@ -50,8 +50,13 @@ public class DVD_Controll {
     private void listAllDVD() throws DvdDaoException {
 
         view.displayDisplayAllBanner();
-        List<String> studentList = dao.getAllDvd();
-        view.displayDvdList(studentList);
+        List<String> dvdList = dao.getAllDvd();
+        if(dvdList.size()==0){
+            view.emptyLib();
+        }
+        else{
+        view.displayDvdList(dvdList);
+        }
     }
 
     private void editDVD(DVD newD, int editChoice, String editTo) throws DvdDaoException {
@@ -71,7 +76,12 @@ public class DVD_Controll {
     private void exitMessage() {
         view.displayExitBanner();
     }
-
+private int getMenuSelection() {
+    return view.printMenuAndGetSelection();
+}
+private int getSelection() {
+    return view.printSelection();
+}
     /*
 private void listAllDVD() {
     view.displayRemoveStudentBanner();
@@ -94,17 +104,8 @@ private void search_DVD_byTitle() {
         int actVal = 0;
         String choice = "";
         while (keepGoing) {
-            io.print("Main Menu");
-            io.print("1. Add DVD");
-            io.print("2. Remove DVD");
-            io.print("3. Edit DVD");
-            io.print("4. List of all DVDs");
-            io.print("5. Detail about a DVD");
-            io.print("6. Search DVD by title");
-            io.print("7. EXIT");
 
-            menuSelection = io.readInt("Please select from the"
-                    + " above choices.", 1, 7);
+            menuSelection = getMenuSelection();
 
             switch (menuSelection) {
                 case 1:
@@ -116,42 +117,39 @@ private void search_DVD_byTitle() {
                 case 3:
                     String dvdTitle = view.getDVDtitle();
                     DVD newD = dao.getDvd(dvdTitle);
-                    io.print("Select Edit Choice number");
-                    io.print("1. DVD title");
-                    io.print("2. Release Date");
-                    io.print("3. MPAA rating");
-                    io.print("4. Directors name");
-                    io.print("5. Studio name");
-                    io.print("6. User rating");
-                    io.print("7. EXIT");
+                    if (newD==null){
+                        view.displayRemoveEmpty();
+                        break;
+                    }
 
-                    editSelection = io.readInt("Please select from the"
-                            + " above choices.", 1, 7);
+                    editSelection = getSelection();
 
                     switch (editSelection) {
+
+    
                         case 1:
-                            choice = io.readString("Please enter new Title");
+                            choice = view.newDtitle();
                             editDVD(newD, editSelection, choice);
                             break;
                         case 2:
-                            choice = io.readString("Please enter new release date");
+                            choice = view.newRdate();
                             editDVD(newD, editSelection, choice);
                             break;
                         case 3:
-                            choice = io.readString("Please enter new MPAA rating");
+                            choice =view.newMPAA();
                             editDVD(newD, editSelection, choice);
 
                             break;
                         case 4:
-                            choice = io.readString("Please enter new directors name");
+                            choice =view.newDirector();
                             editDVD(newD, editSelection, choice);
                             break;
                         case 5:
-                            choice = io.readString("Please enter new studio name");
+                            choice = view.newStudio();
                             editDVD(newD, editSelection, choice);
                             break;
                         case 6:
-                            choice = io.readString("Please enter new user rating");
+                            choice = view.newUser();
                             editDVD(newD, editSelection, choice);
                             break;
                         case 7:

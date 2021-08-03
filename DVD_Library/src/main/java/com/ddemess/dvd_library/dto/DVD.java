@@ -10,7 +10,7 @@ package com.ddemess.dvd_library.dto;
  * @author mawidemess
  */
 public class DVD {
-
+ 
     public String dvdTitle;
     private String releaseDate;
     private String MPAArating;
