@@ -15,10 +15,11 @@ import java.util.List;
 public class DVD_libraryView {
 
     private UserIO io;
-    //private ClassRosterDao dao = new ClassRosterDaoFileImpl();
-    public DVD_libraryView(UserIO io){
-        this.io=io;
+    
+    public DVD_libraryView(UserIO io) {
+        this.io = io;
     }
+
     public DVD getDvdInfo() {
         String dvdTitle = io.readString("Please enter DVD Title");
         String releaseDate = io.readString("Please enter Release date in mm/dd/year");
@@ -58,16 +59,19 @@ public class DVD_libraryView {
     public String getDVDtitle() {
         return io.readString("Please enter DVD title for details, editing and deletion.");
     }
-    public void displayExitBanner() {
-    io.print("Good Bye!!!");
-}
-    public void displayRemoveEmpty() {
-    io.print("Such DVD for removing doesn't exist in library");
-}
 
-public void displayUnknownCommandBanner() {
-    io.print("Unknown Command!!!");
-}
+    public void displayExitBanner() {
+        io.print("Good Bye!!!");
+    }
+
+    public void displayRemoveEmpty() {
+        io.print("Such DVD for removing doesn't exist in library");
+    }
+
+    public void displayUnknownCommandBanner() {
+        io.print("Unknown Command!!!");
+    }
+
     public void displayAddDVDBanner() {
         io.print("=== Add DVD ===");
     }
@@ -90,37 +94,22 @@ public void displayUnknownCommandBanner() {
     }
 
     public void displayDetailDvdBanner(DVD dvdT) {
-        if (dvdT!=null){
-        String studentInfo = String.format("Title: %s :: Release Date: %s :: MPAA Rating: %s :: Director's Name: %s\nStudio's name: %s :: User rating: %s",
-                dvdT.getDvdTitle(),
-                dvdT.releaseDate(),
-                dvdT.MPAArating(),
-                dvdT.directorName(),
-                dvdT.studio(),
-                dvdT.userRating());
-        io.print(studentInfo);
-        }
-        else{
+        if (dvdT != null) {
+            String studentInfo = String.format("Title: %s :: Release Date: %s :: MPAA Rating: %s :: Director's Name: %s\nStudio's name: %s :: User rating: %s",
+                    dvdT.getDvdTitle(),
+                    dvdT.releaseDate(),
+                    dvdT.MPAArating(),
+                    dvdT.directorName(),
+                    dvdT.studio(),
+                    dvdT.userRating());
+            io.print(studentInfo);
+        } else {
             io.print("Error: Such DVD doesn't exist in the library");
         }
         io.readString("Please hit enter to continue.");
 
     }
 
-    /*
-public String getStudentIdChoice() {
-    return io.readString("Please enter the DVD you want to read about.");
-}
-
-
-public void displayRemoveResult(Student studentRecord) {
-    if(studentRecord != null){
-      io.print("Student successfully removed.");
-    }else{
-      io.print("No such student.");
-    }
-    io.readString("Please hit enter to continue.");
-}    */
     public void displayDvdTitle(String dvdTitle) {
 
         io.print("DVD Title: " + dvdTitle);
@@ -131,9 +120,6 @@ public void displayRemoveResult(Student studentRecord) {
         io.print("=== Removing DVD... ===");
     }
 
-    public String getStudentIdChoice() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     public void displayEditingDVDTitle(String title) {
         io.print("=== Editing  DVD " + title + " ===");

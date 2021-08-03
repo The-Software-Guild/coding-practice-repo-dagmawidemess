@@ -28,68 +28,51 @@ public class DvdDaoFileImpl implements DvdDao {
     public static final String DELIMITER = "::";
 
     private Map<String, DVD> dvds = new HashMap<>();
-    /**
- * Writes all students in the roster out to a ROSTER_FILE.  See loadRoster
- * for file format.
- * 
- * @throws ClassRosterDaoException if an error occurs writing to the file
- */
-private void writeRoster() throws DvdDaoException{
-    // NOTE FOR APPRENTICES: We are not handling the IOException - but
-    // we are translating it to an application specific exception and 
-    // then simple throwing it (i.e. 'reporting' it) to the code that
-    // called us.  It is the responsibility of the calling code to 
-    // handle any errors that occur.
-    PrintWriter out;
 
-    try {
-        out = new PrintWriter(new FileWriter(ROSTER_FILE));
-    } catch (IOException e) {
-        throw new DvdDaoException(
-                "Could not save student data.", e);
+    private void writeRoster() throws DvdDaoException {
+        // NOTE FOR APPRENTICES: We are not handling the IOException - but
+        // we are translating it to an application specific exception and 
+        // then simple throwing it (i.e. 'reporting' it) to the code that
+        // called us.  It is the responsibility of the calling code to 
+        // handle any errors that occur.
+        PrintWriter out;
+
+        try {
+            out = new PrintWriter(new FileWriter(ROSTER_FILE));
+        } catch (IOException e) {
+            throw new DvdDaoException(
+                    "Could not save student data.", e);
+        }
+
+        // Write out the Student objects to the roster file.
+        // NOTE TO THE APPRENTICES: We could just grab the student map,
+        // get the Collection of Students and iterate over them but we've
+        // already created a method that gets a List of Students so
+        // we'll reuse it.
+        String studentAsText;
+        List<String> dvdList = this.getAllDvd();
+        for (String currentDvd : dvdList) {
+            // turn a Student into a String
+            DVD newD = this.getDvd(currentDvd);
+            studentAsText = marshallDvd(newD);
+            // write the Student object to the file
+            out.println(studentAsText);
+            // force PrintWriter to write line to the file
+            out.flush();
+        }
+        // Clean up
+        out.close();
     }
 
-    // Write out the Student objects to the roster file.
-    // NOTE TO THE APPRENTICES: We could just grab the student map,
-    // get the Collection of Students and iterate over them but we've
-    // already created a method that gets a List of Students so
-    // we'll reuse it.
-    String studentAsText;
-    List<String> dvdList = this.getAllDvd();
-    for (String currentDvd : dvdList) {
-        // turn a Student into a String
-        DVD newD = this.getDvd(currentDvd);
-        studentAsText = marshallDvd(newD);
-        // write the Student object to the file
-        out.println(studentAsText);
-        // force PrintWriter to write line to the file
-        out.flush();
-    }
-    // Clean up
-    out.close();
-}
     private String marshallDvd(DVD aDvd) {
-        // We need to turn a Student object into a line of text for our file.
-        // For example, we need an in memory object to end up like this:
         // 4321::Charles::Babbage::Java-September1842
-
-        // It's not a complicated process. Just get out each property,
-        // and concatenate with our DELIMITER as a kind of spacer. 
-        // Start with the student id, since that's supposed to be first.
         String studentAsText = aDvd.getDvdTitle() + DELIMITER;
-
-        // add the rest of the properties in the correct order:
-        // FirstName
         studentAsText += aDvd.releaseDate() + DELIMITER;
-
-        // LastName
         studentAsText += aDvd.MPAArating() + DELIMITER;
-
-        // Cohort - don't forget to skip the DELIMITER here.
         studentAsText += aDvd.directorName() + DELIMITER;
         studentAsText += aDvd.studio() + DELIMITER;
         studentAsText += aDvd.userRating();
-        // We have now turned a student to text! Return it!
+        // Turn  a dvd to text! Return it!
         return studentAsText;
     }
 
@@ -127,19 +110,10 @@ private void writeRoster() throws DvdDaoException{
     }
 
     private DVD unmarshallStudent(String studentAsText) {
-        // studentAsText is expecting a line read in from our file.
-        // For example, it might look like this:
-        // 1234::Ada::Lovelace::Java-September1842
-        //
         // We then split that line on our DELIMITER - which we are using as ::
         // Leaving us with an array of Strings, stored in studentTokens.
         // Which should look like this:
-        // ______________________________________
-        // |    |   |        |                  |
-        // |1234|Ada|Lovelace|Java-September1842|
-        // |    |   |        |                  |
-        // --------------------------------------
-        //  [0]  [1]    [2]         [3]
+
         String[] dvdTokens = studentAsText.split(DELIMITER);
         DVD newDvds = new DVD();
         // Given the pattern above, the student Id is in index 0 of the array.
@@ -154,11 +128,8 @@ private void writeRoster() throws DvdDaoException{
     }
 
     @Override
-    public DVD addDvd(String dvdTitle, DVD dvd) throws DvdDaoException
-    {
-        /*Hash key will have DVD title, and values will be list of everything else accordingly to way listed initally. 
-         
-         */
+    public DVD addDvd(String dvdTitle, DVD dvd) throws DvdDaoException {
+        /*Hash key will have DVD title, and values will be list of everything else accordingly to way listed initally. */
         loadRoster();
         DVD newDvd = dvds.put(dvdTitle, dvd);
         writeRoster();
@@ -167,10 +138,10 @@ private void writeRoster() throws DvdDaoException{
 
     @Override
     public DVD getDvd(String dvdTitle) throws DvdDaoException {
-        if(dvds.get(dvdTitle)!=null){
+        if (dvds.get(dvdTitle) != null) {
             loadRoster();
         }
-        
+
         DVD newDvd = dvds.get(dvdTitle);
         return newDvd;
     }
@@ -178,7 +149,7 @@ private void writeRoster() throws DvdDaoException{
     @Override
     public void editDvd(DVD newD, int val, String editTo) throws DvdDaoException {
         switch (val) {
-            
+
             case 1:
                 loadRoster();
                 newD.addDvdTitle(editTo);
@@ -223,19 +194,18 @@ private void writeRoster() throws DvdDaoException{
 
     @Override
     public List<String> getAllDvd() throws DvdDaoException {
-        if ((dvds.size())!=0){
-            loadRoster();
-        }
+
         loadRoster();
+
         return new ArrayList<>(dvds.keySet()); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void removeDvd(String dvdTitle) throws DvdDaoException {
-        if (dvdTitle!=null){
-        loadRoster();
-        dvds.remove(dvdTitle);
-        writeRoster();
+        if (dvdTitle != null) {
+            loadRoster();
+            dvds.remove(dvdTitle);
+            writeRoster();
         }
     }
 

@@ -19,16 +19,16 @@ import java.util.List;
  * @author mawidemess
  */
 public class DVD_Controll {
+
     private DVD_libraryView view;
     private DvdDao dao;
-    //private UserIO io;
     private final UserIO io = new UserIOConsoleImpl();
-  //  private final DVD_libraryView view = new DVD_libraryView();
- //   DvdDaoFileImpl dao = new DvdDaoFileImpl();
+
     public DVD_Controll(DvdDao dao, DVD_libraryView view) {
         this.dao = dao;
         this.view = view;
-}
+    }
+
     private void addDVD() throws DvdDaoException {
         view.displayAddDVDBanner();
         DVD newDvd = view.getDvdInfo();
@@ -39,11 +39,10 @@ public class DVD_Controll {
     private void removeDVD() throws DvdDaoException {
         view.displayRemoveDVDBanner();
         String dvdTitle = view.getDVDtitle();
-        if (dao.getDvd(dvdTitle)!=null){
+        if (dao.getDvd(dvdTitle) != null) {
             dao.removeDvd(dvdTitle);
-        view.displayDvdTitle("Removed DVD : " + dvdTitle);
-        }
-        else{
+            view.displayDvdTitle("Removed DVD : " + dvdTitle);
+        } else {
             view.displayRemoveEmpty();
         }
     }

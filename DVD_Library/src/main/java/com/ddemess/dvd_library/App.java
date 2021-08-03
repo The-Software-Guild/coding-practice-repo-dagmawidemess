@@ -17,16 +17,15 @@ import com.ddemess.dvd_library.ui.UserIOConsoleImpl;
  *
  * @author mawidemess
  */
-
 public class App {
 
     public static void main(String[] args) throws DvdDaoException {
-    UserIO myIo = new UserIOConsoleImpl();
-    
-    DVD_libraryView myView = new DVD_libraryView(myIo);
-    DvdDao myDao = new DvdDaoFileImpl();
-    DVD_Controll controller =
-            new DVD_Controll(myDao, myView);
-    controller.run();
-}
+        UserIO myIo = new UserIOConsoleImpl();
+
+        DVD_libraryView myView = new DVD_libraryView(myIo);
+        DvdDao myDao = new DvdDaoFileImpl();
+        DVD_Controll controller
+                = new DVD_Controll(myDao, myView);
+        controller.run();
+    }
 }

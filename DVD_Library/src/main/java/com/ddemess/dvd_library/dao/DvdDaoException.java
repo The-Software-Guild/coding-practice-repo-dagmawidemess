@@ -9,14 +9,14 @@ package com.ddemess.dvd_library.dao;
  *
  * @author mawidemess
  */
-public class DvdDaoException extends Exception{
-    
+public class DvdDaoException extends Exception {
+
     public DvdDaoException(String message) {
         super(message);
     }
-    
+
     public DvdDaoException(String message, Throwable cause) {
         super(message, cause);
     }
-    
+
 }
