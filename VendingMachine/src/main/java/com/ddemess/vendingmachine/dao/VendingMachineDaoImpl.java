@@ -9,6 +9,10 @@ import com.ddemess.vendingmachine.dto.VendingMachine;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,52 +26,71 @@ import java.util.logging.Logger;
  * @author mawidemess
  */
 public class VendingMachineDaoImpl implements VendingMachineDao {
+
     private Map<String, VendingMachine> item = new HashMap<>();
     public static final String DELIMITER = "::";
-    @Override
-        public void loadRoster() throws FileNotFoundException  {
-        Scanner scanner;
+    public static final String ROSTER_FILE = "dagmawi.txt";
+    VendingMachineAuditDao auditDao = new VendingMachineAuditDaoImpl();
 
-            // Create Scanner for reading the file
+    @Override
+    public void writeRoster(List<VendingMachine> val) throws VendingMachineDaoException {
+        PrintWriter out = null;
+
+        try {
+            out = new PrintWriter(new FileWriter(ROSTER_FILE));
+        } catch (IOException ex) {
+            throw new VendingMachineDaoException(
+                    "Could not save student data.", ex);
+        }
+
+        String vendingText = "";
+
+        for (VendingMachine vendTex : val) {
+            // turn a Student into a String
+            vendingText = marshallDvd(vendTex);
+            // write the Student object to the file
+            out.println(vendingText);
+            // force PrintWriter to write line to the file
+            out.flush();
+        }
+        // Clean up
+        out.close();
+    }
+
+    @Override
+    public void loadRoster() throws VendingMachineDaoException {
+        Scanner scanner = null;
+
+        try {
             scanner = new Scanner(
                     new BufferedReader(
-                            new FileReader("dagmawi.txt")));
-        
-        // currentLine holds the most recent line read from the file
-        String currentLine;
-        // currentStudent holds the most recent student unmarshalled
-        VendingMachine currentDvd;
-        // Go through ROSTER_FILE line by line, decoding each line into a 
-        // Student object by calling the unmarshallStudent method.
-        // Process while we have more lines in the file
-        while (scanner.hasNextLine()) {
-            // get the next line in the file
-            currentLine = scanner.nextLine();
-            // unmarshall the line into a Student
-            currentDvd = unmarshallStudent(currentLine);
+                            new FileReader(ROSTER_FILE)));
+        } catch (FileNotFoundException ex) {
+            throw new VendingMachineDaoException("couldn't", ex);
+        }
 
-            // We are going to use the student id as the map key for our student object.
-            // Put currentStudent into the map using student id as the key
+        String currentLine;
+        VendingMachine currentDvd;
+
+        while (scanner.hasNextLine()) {
+            currentLine = scanner.nextLine();
+            currentDvd = unmarshallStudent(currentLine);
             item.put(currentDvd.getItem(), currentDvd);
         }
-        
-        // close scanner
+
+        auditDao.writeAuditEntry("Loaded File");
         scanner.close();
     }
- private String marshallDvd(VendingMachine aDvd) {
-        // 4321::Charles::Babbage::Java-September1842
-        String studentAsText = aDvd.getItem()+ DELIMITER;
-        studentAsText += aDvd.getItemPrice()+ ":";
-       
+
+    private String marshallDvd(VendingMachine aDvd) {
+        String studentAsText = aDvd.getItem() + DELIMITER;
+        studentAsText += aDvd.getItemPrice() + ":";
         studentAsText += String.valueOf(aDvd.getInventoryCout());
-        // Turn  a dvd to text! Return it!
+
         return studentAsText;
     }
-  private VendingMachine unmarshallStudent(String studentAsText) {
-        // We then split that line on our DELIMITER - which we are using as ::
-        // Leaving us with an array of Strings, stored in studentTokens.
-        // Which should look like this:
-     
+
+    private VendingMachine unmarshallStudent(String studentAsText) {
         String[] dvdTokens = studentAsText.split(DELIMITER);
         String[] priceInventory = dvdTokens[1].split(":");
         VendingMachine newDvds = new VendingMachine();
@@ -75,62 +98,93 @@ public class VendingMachineDaoImpl implements VendingMachineDao {
         newDvds.setItem(dvdTokens[0]);
         newDvds.setItemPrice(priceInventory[0]);
         newDvds.setInventoryCout((Integer.parseInt(priceInventory[1])));
-        
+
         // We have now created a student! Return it!
         return newDvds;
     }
-  @Override
-  public List<String> getPostiveItems(){
+
+    @Override
+    public List<String> getPostiveItems() {
         try {
             loadRoster();
-        } catch (FileNotFoundException ex) {
+        } catch (VendingMachineDaoException ex) {
             Logger.getLogger(VendingMachineDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-       List <VendingMachine> vals=  new ArrayList<VendingMachine>();
-       for(VendingMachine x: item.values()){
+
+        List<VendingMachine> vals = new ArrayList<VendingMachine>();
+        /*for(VendingMachine x: item.values()){
            vals.add(x);
       
-  }
-              // item.values(); 
-      List<String> ans = new ArrayList<String>();
-      for(VendingMachine temp : vals){
-             if (temp.getInventoryCout() > 0){
-              ans.add(temp.getItem());
-             }
-      }
-        
-      return ans;
-  }
-    @Override
-    public void updatePrice(String items) {
-        
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  }*/
+        item.values().forEach(x -> {
+            vals.add(x);
+        });
+
+        List<String> ans = new ArrayList<String>();
+        for (VendingMachine temp : vals) {
+            if (temp.getInventoryCout() > 0) {
+                ans.add(temp.getItem());
+            }
+        }
+
+        return ans;
     }
-    @Override
-    public int getCountOfItems (){
-        //NEED TO WORK ON
-        return 1;
-    }
+
+
     @Override
     public void updateInventory(String items) {
-        item.get(items).setInventoryCout(item.get(items).getInventoryCout()-1);
-        //price.setInventoryCout(price.getInventoryCout()-1);
+        item.get(items).setInventoryCout(item.get(items).getInventoryCout() - 1);
     }
 
     @Override
     public String getPrice(String items) {
-        VendingMachine price= item.get(items);
-        return price.getItemPrice();
+        if ((item.containsKey(items))) {
+            VendingMachine price = item.get(items);
+            return price.getItemPrice();
+        }
+        return null;
     }
 
     @Override
     public int getInventoryNum(String items) {
-        VendingMachine  val= item.get(items);
+        VendingMachine val = item.get(items);
         return val.getInventoryCout();
     }
+
     @Override
-    public List<VendingMachine> getAllItems(){
+    public List<VendingMachine> getAllItems() {
         return new ArrayList(item.values());
     }
-    
+
+    @Override
+    public boolean sufficentBalnce(BigDecimal val,String bal) {
+        try{
+         if(val.compareTo(BigDecimal.ZERO) < 0){
+             throw new InsufficientFundsException("\nThe amount you entered $" + bal + " is insufficient!" );
+         }
+         else{
+             return true;
+         }
+         
+        }
+        catch(InsufficientFundsException e){
+          System.out.println(e.toString());
+        }
+        return false;
+    }
+    @Override
+    public void  noInventory() {
+        
+        try{
+         
+            throw new NoItemInventoryException("\nThere is no such item in the Vending Machine !\n" );
+         
+         
+         
+        }
+        catch(NoItemInventoryException e){
+          System.out.println(e.toString());
+        }
+    }
+
 }

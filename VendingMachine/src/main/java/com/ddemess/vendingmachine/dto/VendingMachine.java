@@ -13,9 +13,6 @@ public class VendingMachine {
     private String itemPrice;
     private String item;
     private int inventoryCout;
-    // Programming Language + cohort month/year
-   
-   
     
     public String getItem() {
         return item;
