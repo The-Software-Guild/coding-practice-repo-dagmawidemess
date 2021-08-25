@@ -17,12 +17,13 @@ public interface GameDao {
 
     public Round getRoundById(int roundId);
 
-
     Game add(Game game);
 
- 
+    public void deleteGameById(int gameId);
 
     List<Game> getAllGames();
+
+    public void deleteRoundById(int roundId);
 
     Game getGameById(int gameId);
 

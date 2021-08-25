@@ -22,7 +22,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import java.text.SimpleDateFormat;  
+import java.text.SimpleDateFormat;
+
 /**
  *
  * @author Dagmawi Demess
@@ -60,7 +61,7 @@ public class GameController {
             dao.updateGameFinished(gameId);
         }
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date date = new Date();  
+        Date date = new Date();
         rounds.setGuessTime(formatter.format(date));
         return dao.saveRound(rounds, gameId);
     }

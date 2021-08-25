@@ -19,6 +19,7 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -32,6 +33,23 @@ public class GameDaoDBImpl implements GameDao {
     @Autowired
     public GameDaoDBImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    @Transactional
+    public void deleteGameById(int gameId) {
+        final String DELETE_GAME = "DELETE FROM game WHERE id = ?";
+        final String DELETE_Round = "DELETE FROM round WHERE id = ?";
+        jdbcTemplate.update(DELETE_Round, gameId);
+        jdbcTemplate.update(DELETE_GAME, gameId);
+    }
+
+    @Override
+    @Transactional
+    public void deleteRoundById(int roundId) {
+
+        final String DELETE_ROUND = "DELETE FROM round WHERE id = ?";
+        jdbcTemplate.update(DELETE_ROUND, roundId);
     }
 
     @Override
@@ -117,10 +135,6 @@ public class GameDaoDBImpl implements GameDao {
         return jdbcTemplate.query(sql, new RoundMapper(), gameId);
 
     }
-
-  
-
-   
 
     private static final class RoundMapper implements RowMapper<Round> {
 

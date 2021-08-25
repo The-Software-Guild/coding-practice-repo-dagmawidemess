@@ -13,22 +13,22 @@ import java.util.Random;
 
 /**
  *
- * @author mawidemess
+ * @author Dagmawi Demess
  */
 public class ServiceLayer {
+
     public List<Game> hideAnswers(List<Game> listOfGames) {
-        
-        for(Game game: listOfGames){
-            if(game.getStatus().equals("in progress"))
-            {
+        for (Game game : listOfGames) {
+            if (game.getStatus().equals("in progress")) {
                 game.setAnswer("XXXX");
             }
         }
         return listOfGames;
     }
-    
-    public String generateAnswer(){
-         Random rnd = new Random();
+
+    public String generateAnswer() {
+        Random rnd = new Random();
+        //make sure to check no duplicates
         int d1 = rnd.nextInt(10);
 
         int d2 = rnd.nextInt(10);
@@ -37,7 +37,7 @@ public class ServiceLayer {
         }
 
         int d3 = rnd.nextInt(10);
-        while (d3 == d1 ||d3 == d2 ) {
+        while (d3 == d1 || d3 == d2) {
             d3 = rnd.nextInt(10);
         }
 
@@ -48,42 +48,40 @@ public class ServiceLayer {
 
         String answer = String.valueOf(d1) + String.valueOf(d2)
                 + String.valueOf(d3) + String.valueOf(d4);
-    
-    return answer;
+
+        return answer;
     }
-    public Map<Character, Integer> userResult(String userGuess, int gameId, String userAns){
-        int e=0;
-        int p=0;
-        Map<Character, Integer> outPutMap= new HashMap<>();
-        Map<Character, Integer> guess= new HashMap<>();
-        Map<Character, Integer> answer= new HashMap<>();
-        
-        //load answer and guess with index to map
-        for(int i =0; i <userGuess.length(); i++ ){
-            guess.put(userGuess.charAt(i),i);
+
+    public Map<Character, Integer> userResult(String userGuess, int gameId, String userAns) {
+        int e = 0;
+        int p = 0;
+        Map<Character, Integer> outPutMap = new HashMap<>();
+        Map<Character, Integer> guess = new HashMap<>();
+        Map<Character, Integer> answer = new HashMap<>();
+
+        //load answer and guess with index to map thus to know if 'e'
+        for (int i = 0; i < userGuess.length(); i++) {
+            guess.put(userGuess.charAt(i), i);
             answer.put(userAns.charAt(i), i);
         }
+
+        for (Map.Entry<Character, Integer> entry : guess.entrySet()) {
+            //check if at least they guessed digit in answer
+            if (answer.containsKey(entry.getKey())) {
+                //check if guess in correct index
+                if ((entry.getValue() == answer.get(entry.getKey()))) {
+                    e = e + 1;
+                } else {
+                    p = p + 1;
+                }
+            }
+
+        }
         
-      for(Map.Entry<Character,Integer> entry: guess.entrySet()){
-          //check if at least they guessed digit
-          if(answer.containsKey(entry.getKey())){
-              //check if guess in correct spot
-              if((entry.getValue()== answer.get(entry.getKey()))){
-                  e=e+1;
-              }
-              else{
-                  p=p+1;
-              }
-          }
-          
-      }
-        
-      outPutMap.put('e',e);
-      outPutMap.put('p',p);
-        
+        outPutMap.put('e', e);
+        outPutMap.put('p', p);
+
         return outPutMap;
     }
 
-    
-    
 }
