@@ -12,7 +12,10 @@ package com.sg.gym.controller;
 import com.sg.gym.dao.ClientDao;
 import com.sg.gym.dao.TrainerDao;
 import com.sg.gym.dao.WorkoutDao;
+import com.sg.gym.model.Client;
 import com.sg.gym.model.Trainer;
+import com.sg.gym.model.Workout;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,35 +42,34 @@ public class TrainerController {
     @GetMapping("trainer")
     public String displaytrainers(Model model) {
         List<Trainer> trainer = trainerDao.getAllTrainers();
+        List<Client> client = clientDao.getAllClients();
+        List<Workout> workout = workoutDao.getAllWorkouts();
         model.addAttribute("trainer", trainer);
+        model.addAttribute("workout",workout);
+        model.addAttribute("client",client);
+        
         return "trainer";
     }
     
     @PostMapping("addTrainer")
-    public String addtrainer(HttpServletRequest request) {
-        String firstName = request.getParameter("first_name");
-        String lastName = request.getParameter("last_name");
-        int age = Integer.parseInt(request.getParameter("age"));
-        int yearsExpiernce = Integer.parseInt(request.getParameter("years_of_experience"));
-        boolean isAvaliable = Boolean.parseBoolean(request.getParameter("isAvailable"));
-       // int workoutId = Integer.parseInt(request.getParameter("workout_id"));
+    public String addtrainer(Trainer train,HttpServletRequest request) {
+        String workoutId = request.getParameter("workout_id");
+        String[] clientIds =  request.getParameterValues("client_id");
+        train.setWorkout(workoutDao.getWorkoutById(Integer.parseInt(workoutId)));
+        List <Client> clients = new ArrayList<>();
+        for(String clientId : clientIds){
+            clients.add(clientDao.getClientById(Integer.parseInt(clientId)));
+        }
+        train.setClients(clients);
+        trainerDao.addTrainer(train);
         
-        Trainer trainer = new Trainer();
-        trainer.setFirst_name(firstName);
-        trainer.setLastName(lastName);
-        trainer.setAge(age);
-        trainer.setYears_of_experience(yearsExpiernce);
-        trainer.setIsAvailable(isAvaliable);
-        
-        trainerDao.addTrainer(trainer);
         
         
         return "redirect:/trainer";
     }
     
     @GetMapping("deleteTrainer")
-    public String deleteworkout(HttpServletRequest request) {
-        int id = Integer.parseInt(request.getParameter("trainer_id"));
+    public String deleteworkout(Integer id) {
         trainerDao.deleteTrainerById(id);
         
         return "redirect:/trainer";
