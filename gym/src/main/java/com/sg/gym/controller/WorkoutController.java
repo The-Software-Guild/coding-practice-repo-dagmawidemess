@@ -51,6 +51,7 @@ public class WorkoutController {
         String equipment = request.getParameter("equipment");
         
         Workout workout = new Workout();
+        
         workout.setName(name);
         workout.setTarget_muscle(target_muscle);
         workout.setEquipment(equipment);

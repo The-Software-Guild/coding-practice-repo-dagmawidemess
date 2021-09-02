@@ -122,6 +122,7 @@
                                 <th>Age</th>
                                 <th>Years Of Experience</th>
                                 <th>Available?</th>
+                                <th>Workout</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
                             </tr>
@@ -134,6 +135,7 @@
                                 <td th:text="${train.age}">Trainer Age</td>
                                 <td th:text="${train.years_of_experience}">Trainer Years Experience</td>
                                 <td th:text="${train.isAvailable}">Available?</td>
+                               
                                 <td><a href="#" th:href="@{/editTrainer(id=${train.id})}">Edit</a></td>
                                 <td><a href="#" th:href="@{/deleteTrainer(id=${train.id})}">Delete</a></td>
                             </tr>

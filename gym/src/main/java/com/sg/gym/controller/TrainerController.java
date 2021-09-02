@@ -62,9 +62,6 @@ public class TrainerController {
         }
         train.setClients(clients);
         trainerDao.addTrainer(train);
-        
-        
-        
         return "redirect:/trainer";
     }
     

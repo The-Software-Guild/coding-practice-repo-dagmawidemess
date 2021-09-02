@@ -12,11 +12,15 @@ p{
     color:greenyellow;
     line-height:40px;
 }
+img {
+  max-width: 100%;
+  height: auto;
+}
 .btn{
     font-family: "Roboto",sans-serif;
     font-size: 18px;
     font-weight: bold;
-    background: aqua;
+    background: #FFFF99;
     text-align: center;
     text-transform: uppercase;
     width:160px;

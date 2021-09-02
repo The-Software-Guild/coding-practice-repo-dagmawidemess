@@ -11,7 +11,7 @@ package com.sg.gym.model;
  */
 import java.util.List;
 import java.util.Objects;
-
+import com.sg.gym.model.Workout;
 /**
  *
  * @author farhanshahbaz
