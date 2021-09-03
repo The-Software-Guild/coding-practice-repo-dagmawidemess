@@ -9,7 +9,6 @@ package com.sg.gym.model;
  *
  * @author mawidemess
  */
-import java.util.Objects;
 
 /**
  *
