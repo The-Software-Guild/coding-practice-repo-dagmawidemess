@@ -36,6 +36,15 @@ public class ClientController {
     
     @Autowired
     WorkoutDao workoutDao;
+    @GetMapping("index")
+    public String displaysworkouts(Model model) {
+        return "index";
+    }
+    @GetMapping("land")
+    public String displassworkouts(Model model) {
+        return "land";
+    }
+    
     @GetMapping("client")
     public String displayworkouts(Model model) {
         List<Client> client = clientDao.getAllClients();

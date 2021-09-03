@@ -9,9 +9,12 @@ h1 {
 p{
     text-align: center;
     font-style: italic;
-    color:greenyellow;
+    font-weight: bold;
+    color:black;
     line-height:40px;
+    text-decoration: underline;
 }
+
 img {
   max-width: 100%;
   height: auto;
